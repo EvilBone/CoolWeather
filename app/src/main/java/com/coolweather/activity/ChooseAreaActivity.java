@@ -1,6 +1,8 @@
 package com.coolweather.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +27,7 @@ import com.coolweather.util.Utility;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChooseAreaActivity extends AppCompatActivity {
+public class ChooseAreaActivity extends Activity {
     public static final int LEVEL_PROVINCE = 1;
     public static final int LEVEL_CITY = 2;
     public static final int LEVEL_COUNTRY = 0;
@@ -73,6 +75,11 @@ public class ChooseAreaActivity extends AppCompatActivity {
                 } else if (currentLevel == LEVEL_PROVINCE) {
                     selectedProvince = provinces.get(position);
                     queryCities();
+                }else if(currentLevel == LEVEL_CITY) {
+                    City city = cities.get(position);
+                    Intent intent = new Intent(ChooseAreaActivity.this,WeatherActivity.class);
+                    intent.putExtra("cityCode",city.getCityCode());
+                    startActivity(intent);
                 }
             }
         });
