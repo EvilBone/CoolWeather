@@ -9,7 +9,6 @@ public class WeatherNow {
     private String tmp;//当前温度
     private String fl;//体感温度
     private String spd;//风速
-    private String wind;//风力状况
     private String sc;//风力等级
     private String deg;//风向（角度）
     private String dir;//风向（方向）
@@ -57,14 +56,6 @@ public class WeatherNow {
 
     public void setSpd(String spd) {
         this.spd = spd;
-    }
-
-    public String getWind() {
-        return wind;
-    }
-
-    public void setWind(String wind) {
-        this.wind = wind;
     }
 
     public String getSc() {

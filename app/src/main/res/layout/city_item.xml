@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <RelativeLayout
+        android:id="@+id/icon_layout"
+        android:layout_alignParentLeft="true"
+        android:padding="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/icon_image"
+            android:layout_alignParentTop="true"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/sun"
+            />
+        <TextView
+            android:id="@+id/icon_tmp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/icon_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="8sp"
+            android:textColor="#000"
+            android:text="12-35"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/city_name_item_tv"
+        android:layout_toRightOf="@+id/icon_layout"
+        android:paddingLeft="15dp"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="长沙"/>
+</RelativeLayout>

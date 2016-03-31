@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.ListView;
 
 import com.coolweather.db.CoolWeatherOpenHelper;
 
@@ -168,5 +169,80 @@ public class CoolWeatherDB {
             country.setCountryName(cursor.getString(cursor.getColumnIndex("country_name")));
         }
         return country;
+    }
+
+    public List<WeatherInfo> loadWeatherInfos(){
+        List<WeatherInfo> infoList = new ArrayList<>();
+        Cursor cursor = db.query("weatherinfo",null,null,null,null,null,null);
+        if(cursor.moveToFirst()){
+            do{
+                WeatherInfo weatherInfo = new WeatherInfo();
+                String cityCode = cursor.getString(cursor.getColumnIndex("city_code"));
+                weatherInfo.setId(cityCode);
+                weatherInfo.setCity(cursor.getString(cursor.getColumnIndex("city_name")));
+                int sel = cursor.getInt(cursor.getColumnIndex("city_select"));
+                boolean isSelect = false;
+                if(sel>0)
+                    isSelect = true;
+                weatherInfo.setCitySelect(isSelect);
+                weatherInfo.setUpdateLoc(cursor.getString(cursor.getColumnIndex("update_loc")));
+                weatherInfo.setUpdateUtc(cursor.getString(cursor.getColumnIndex("update_utc")));
+                WeatherNow weatherNow = loadWeatherNow(cityCode);
+                weatherInfo.setWeatherNow(weatherNow);
+                List<WeatherDailyForecast> forecast = loadDailyForecast(cityCode);
+                weatherInfo.setWeatherDailyForecast(forecast);
+                infoList.add(weatherInfo);
+            }while (cursor.moveToNext());
+        }
+        return infoList;
+    }
+
+    public WeatherNow loadWeatherNow(String cityCode){
+        WeatherNow weatherNow = new WeatherNow();
+        Cursor cursor = db.query("weathernow",null,"city_code = ?",new String[]{cityCode},null,null,null);
+        if (cursor.moveToFirst()){
+            weatherNow.setTmp(cursor.getString(cursor.getColumnIndex("weather_tmp")));
+            weatherNow.setCode(cursor.getString(cursor.getColumnIndex("cond_code")));
+            weatherNow.setTxt(cursor.getString(cursor.getColumnIndex("cond_txt")));
+            weatherNow.setSc(cursor.getString(cursor.getColumnIndex("weather_sc")));
+            weatherNow.setPres(cursor.getString(cursor.getColumnIndex("weather_pres")));
+            weatherNow.setVis(cursor.getString(cursor.getColumnIndex("weather_vis")));
+            weatherNow.setDeg(cursor.getString(cursor.getColumnIndex("weather_deg")));
+            weatherNow.setFl(cursor.getString(cursor.getColumnIndex("weather_fl")));
+            weatherNow.setDir(cursor.getString(cursor.getColumnIndex("weather_dir")));
+            weatherNow.setPcpn(cursor.getString(cursor.getColumnIndex("weather_pcpn")));
+            weatherNow.setSpd(cursor.getString(cursor.getColumnIndex("weather_spd")));
+        }
+        return weatherNow;
+    }
+
+    public List<WeatherDailyForecast> loadDailyForecast(String cityCode){
+        List<WeatherDailyForecast> list = new ArrayList<>();
+        Cursor cdaily = db.query("dailyforecast",null,"city_code = ?",new String[]{cityCode},null,null,"weather_date asc");
+        if (cdaily.moveToFirst()){
+            do {
+                WeatherDailyForecast forecast = new WeatherDailyForecast();
+                forecast.setAstroSr(cdaily.getString(cdaily.getColumnIndex("astro_sr")));
+                forecast.setAstroSs(cdaily.getString(cdaily.getColumnIndex("astro_ss")));
+                forecast.setCondCodeD(cdaily.getString(cdaily.getColumnIndex("cond_code_d")));
+                forecast.setCondCodeN(cdaily.getString(cdaily.getColumnIndex("cond_code_n")));
+                forecast.setCondTxtD(cdaily.getString(cdaily.getColumnIndex("cond_txt_d")));
+                forecast.setCondTxtN(cdaily.getString(cdaily.getColumnIndex("cond_txt_n")));
+                forecast.setForecastDate(cdaily.getString(cdaily.getColumnIndex("weather_date")));
+                forecast.setForecastHum(cdaily.getString(cdaily.getColumnIndex("weather_hum")));
+                forecast.setForecastPcpn(cdaily.getString(cdaily.getColumnIndex("weather_pcpn")));
+                forecast.setForecastPop(cdaily.getString(cdaily.getColumnIndex("weather_pop")));
+                forecast.setForecastPres(cdaily.getString(cdaily.getColumnIndex("weather_pres")));
+                forecast.setForecastVis(cdaily.getString(cdaily.getColumnIndex("weather_vis")));
+                forecast.setTmp_max(cdaily.getString(cdaily.getColumnIndex("tmp_max")));
+                forecast.setTmp_min(cdaily.getString(cdaily.getColumnIndex("tmp_min")));
+                forecast.setWindDeg(cdaily.getString(cdaily.getColumnIndex("wind_deg")));
+                forecast.setWindDir(cdaily.getString(cdaily.getColumnIndex("wind_dir")));
+                forecast.setWindSc(cdaily.getString(cdaily.getColumnIndex("wind_sc")));
+                forecast.setWindSpd(cdaily.getString(cdaily.getColumnIndex("wind_spd")));
+                list.add(forecast);
+            }while (cdaily.moveToNext());
+        }
+        return list;
     }
 }

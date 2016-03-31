@@ -1,5 +1,7 @@
 package com.coolweather.model;
 
+import java.util.List;
+
 /**
  * Created by bone on 16/3/30.
  */
@@ -9,7 +11,25 @@ public class WeatherInfo {
     private String id;
     private String updateLoc;//数据更新的当地时间
     private String updateUtc;//数据更新的国际时间
+    private boolean citySelect;
     private WeatherNow weatherNow;
+    private List<WeatherDailyForecast> weatherDailyForecast;
+
+    public List<WeatherDailyForecast> getWeatherDailyForecast() {
+        return weatherDailyForecast;
+    }
+
+    public void setWeatherDailyForecast(List<WeatherDailyForecast> weatherDailyForecast) {
+        this.weatherDailyForecast = weatherDailyForecast;
+    }
+
+    public boolean isCitySelect() {
+        return citySelect;
+    }
+
+    public void setCitySelect(boolean citySelect) {
+        this.citySelect = citySelect;
+    }
 
     public String getCity() {
         return city;

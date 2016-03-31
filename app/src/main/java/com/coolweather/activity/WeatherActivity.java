@@ -59,7 +59,6 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
         }else{
 
         }
-
     }
 
     @Override
@@ -71,6 +70,8 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
                 queryWeatherInfoFromServer(preferences,cityCode);
                 break;
             case R.id.switch_btn:
+                Intent intent = new Intent(WeatherActivity.this,CitiesActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;
