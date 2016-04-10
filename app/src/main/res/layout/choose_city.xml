@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="#263238"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageButton
+        android:id="@+id/back_city_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00000000"
+        android:src="@drawable/ic_navigate_before_white_48px"
+        />
+    <SearchView
+        android:id="@+id/search_view"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:queryHint="搜索城市"></SearchView>
+</LinearLayout>
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#fff"></Spinner>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+   <fragment
+       android:id="@+id/result_fragment"
+       android:name="com.coolweather.fragment.HotCityFragment"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       tools:layout="@layout/hotcity_frag" />
+    </FrameLayout>
+</LinearLayout>

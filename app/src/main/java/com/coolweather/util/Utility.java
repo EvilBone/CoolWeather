@@ -1,6 +1,7 @@
 package com.coolweather.util;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -8,6 +9,7 @@ import com.coolweather.model.City;
 import com.coolweather.model.CoolWeatherDB;
 import com.coolweather.model.Country;
 import com.coolweather.model.Province;
+import com.coolweather.model.WeatherDailyForecast;
 import com.coolweather.model.WeatherInfo;
 import com.coolweather.model.WeatherNow;
 
@@ -69,7 +71,7 @@ public class Utility {
         return false;
     }
 
-    public synchronized static boolean handleWeathrResponse(SharedPreferences preferences, String response) {
+    public synchronized static boolean handleWeathrResponse(CoolWeatherDB coolWeatherDB, String response) {
         if (!TextUtils.isEmpty(response)) {
             try {
                 JSONObject jsonObject = new JSONObject(response).getJSONArray("HeWeather data service 3.0").getJSONObject(0);
@@ -108,18 +110,44 @@ public class Utility {
                 weatherNow.setVis(nowJson.getString("vis"));
 
                 weatherInfo.setWeatherNow(weatherNow);
-//存储天气数据
-                SharedPreferences.Editor editor = preferences.edit();
 
-                editor.putString("city", weatherInfo.getCity());
-                editor.putString("cnty", weatherInfo.getCnty());
-                editor.putString("cityCode", weatherInfo.getId());
-                editor.putString("updateLoc", weatherInfo.getUpdateLoc());
-                editor.putString("updateUtc", weatherInfo.getUpdateLoc());
-                editor.putString("condCode", weatherNow.getCode());
-                editor.putString("condTxt", weatherNow.getTxt());
-                editor.putString("tmp", weatherNow.getTmp());
-                editor.commit();
+                //天气预测
+                List<WeatherDailyForecast> list = new ArrayList<>();
+                JSONArray jsonArray = jsonObject.getJSONArray("daily_forecast");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    WeatherDailyForecast forecast = new WeatherDailyForecast();
+                    JSONObject object = jsonArray.getJSONObject(i);
+                    forecast.setForecastDate(object.getString("date"));
+                    forecast.setForecastHum(object.getString("hum"));
+                    forecast.setForecastVis(object.getString("vis"));
+                    forecast.setForecastPres(object.getString("pres"));
+                    forecast.setForecastPop(object.getString("pop"));
+                    forecast.setForecastPcpn(object.getString("pcpn"));
+
+                    JSONObject astro = object.getJSONObject("astro");
+                    forecast.setAstroSr(astro.getString("sr"));
+                    forecast.setAstroSs(astro.getString("ss"));
+
+                    JSONObject cond = object.getJSONObject("cond");
+                    forecast.setCondCodeD(cond.getString("code_d"));
+                    forecast.setCondCodeN(cond.getString("code_n"));
+                    forecast.setCondTxtD(cond.getString("txt_d"));
+                    forecast.setCondTxtN((cond.getString("txt_n")));
+
+                    JSONObject tmp = object.getJSONObject("tmp");
+                    forecast.setTmp_max(tmp.getString("max"));
+                    forecast.setTmp_min(tmp.getString("min"));
+
+                    JSONObject wind = object.getJSONObject("wind");
+                    forecast.setWindSpd(wind.getString("spd"));
+                    forecast.setWindSc(wind.getString("sc"));
+                    forecast.setWindDeg(wind.getString("deg"));
+                    forecast.setWindDir(wind.getString("dir"));
+                    list.add(forecast);
+                }
+                weatherInfo.setWeatherDailyForecast(list);
+
+                coolWeatherDB.saveWeatherInfo(weatherInfo);
 
 
             } catch (Exception e) {
@@ -130,5 +158,8 @@ public class Utility {
         return false;
     }
 
+    private void saveCondIcon(String cityCode){
+        String iconString = "http://files.heweather.com/cond_icon/"+cityCode+".png";
 
+    }
 }

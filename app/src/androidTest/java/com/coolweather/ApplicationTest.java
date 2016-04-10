@@ -20,6 +20,10 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
 
     public void testName() {
 
+        CoolWeatherDB coolWeatherDB = CoolWeatherDB.getInstance(getContext());
+        int size = coolWeatherDB.loadHotCities().size();
+        Log.d("testName",String.valueOf(size));
+
     }
 
     public void testUtitlity() throws Exception {

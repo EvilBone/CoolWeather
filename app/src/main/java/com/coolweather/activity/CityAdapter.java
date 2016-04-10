@@ -44,9 +44,10 @@ public class CityAdapter extends ArrayAdapter<WeatherInfo>{
         }
         String tmpMax = weatherInfo.getWeatherDailyForecast().get(0).getTmp_max();
         String tmpMin = weatherInfo.getWeatherDailyForecast().get(0).getTmp_min();
+        viewHolder.imageView.setImageBitmap(weatherInfo.getWeatherNow().getIcon());
         viewHolder.tmpView.setText(tmpMin+"℃/"+tmpMax+"℃");
         viewHolder.cityView.setText(weatherInfo.getCity());
-        return super.getView(position, convertView, parent);
+        return view;
     }
 
     class ViewHolder{

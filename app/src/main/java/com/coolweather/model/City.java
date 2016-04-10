@@ -10,6 +10,15 @@ public class City {
     private String cityLac;
     private String cityLon;
     private int provinceId;
+    private boolean selected;
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 
     public int getId() {
         return id;

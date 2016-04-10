@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coolweather.R;
+import com.coolweather.model.BaseActivity;
 import com.coolweather.model.City;
 import com.coolweather.model.CoolWeatherDB;
 import com.coolweather.model.Country;
@@ -27,7 +28,7 @@ import com.coolweather.util.Utility;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChooseAreaActivity extends Activity {
+public class ChooseAreaActivity extends BaseActivity {
     public static final int LEVEL_PROVINCE = 1;
     public static final int LEVEL_CITY = 2;
     public static final int LEVEL_COUNTRY = 0;

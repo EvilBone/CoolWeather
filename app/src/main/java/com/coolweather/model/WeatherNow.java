@@ -1,5 +1,7 @@
 package com.coolweather.model;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by bone on 16/3/30.
  */
@@ -16,7 +18,15 @@ public class WeatherNow {
     private String hum;//湿度（%）
     private String pres;//气压
     private String vis;//能见度
+    private Bitmap icon;//图标
 
+    public Bitmap getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Bitmap icon) {
+        this.icon = icon;
+    }
 
     public String getTxt() {
         return txt;
