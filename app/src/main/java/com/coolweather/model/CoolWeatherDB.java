@@ -265,9 +265,9 @@ public class CoolWeatherDB {
     public void updateWeatherInfo(WeatherInfo weatherInfo){
         if(weatherInfo != null){
             ContentValues infovalues = new ContentValues();
-            infovalues.put("city_code",weatherInfo.getId());
-            infovalues.put("city_select",weatherInfo.isCitySelect());
+            infovalues.put("city_select",1);
             db.update("weatherinfo",infovalues,"city_code = ?",new String[]{weatherInfo.getId()});
+            LogUtil.d("CoolWeatherDB","updateWeatherInfo 执行成功！");
         }
     }
     //更新选择信息

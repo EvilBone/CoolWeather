@@ -22,6 +22,7 @@ import com.coolweather.R;
 import com.coolweather.model.BaseActivity;
 import com.coolweather.model.CoolWeatherDB;
 import com.coolweather.model.WeatherInfo;
+import com.coolweather.service.AutoUpdateService;
 import com.coolweather.util.ActivityController;
 import com.coolweather.util.HttpCallbackListener;
 import com.coolweather.util.HttpCallbackListenerFile;
@@ -85,7 +86,10 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
                 queryWeatherInfo();
             }
         }
+        Intent i = new Intent(this, AutoUpdateService.class);
+        startService(i);
     }
+
 
     @Override
     protected void onDestroy() {
@@ -127,21 +131,19 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
 
     }
 
-    private void queryDefaultCity() {
-
-    }
 
     //查询天气信息
     private void queryWeatherInfo() {
         weatherInfo = coolWeatherDB.loadWeatherInfo(cityCode);
         if (weatherInfo != null) {
-            weatherInfo.setCitySelect(true);
-            coolWeatherDB.updateSelectedCity();
-            coolWeatherDB.updateWeatherInfo(weatherInfo);
             showWeatherInf();
+            coolWeatherDB.updateSelectedCity();
+            weatherInfo.setCitySelect(true);
+            coolWeatherDB.updateWeatherInfo(weatherInfo);
         } else {
             queryWeatherInfoFromServer();
         }
+
     }
 
     private void queryWeatherInfoFromServer() {
@@ -161,6 +163,9 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
                             weatherInfo = coolWeatherDB.loadWeatherInfo(cityCode);
                             saveIcon();
                             showWeatherInf();
+                            coolWeatherDB.updateSelectedCity();
+                            weatherInfo.setCitySelect(true);
+                            coolWeatherDB.updateWeatherInfo(weatherInfo);
                         }
                     });
                 }
@@ -176,7 +181,6 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
                         Toast.makeText(WeatherActivity.this, "更新失败", Toast.LENGTH_LONG).show();
                     }
                 });
-
             }
         });
     }
